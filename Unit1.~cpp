@@ -1,0 +1,76 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+
+int x=-8,y=-8;
+
+bool czy_dotyk()
+{
+
+
+}
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Timer1Timer(TObject *Sender)
+{
+        ball->Left +=x;
+        ball->Top +=y;
+
+        if(ball->Left <= tlo->Left) x = -x;
+
+        if(ball->Top <= tlo->Top) y = -y;
+
+        if(ball->Left+ball->Width+5 >= tlo->Width) x = -x;
+
+        if(ball->Top+ball->Height+5 >= tlo->Height) y = -y;
+
+        else if(ball->Left > pad->Left-ball->Width/2 && ball->Left < pad->Left+pad->Width && ball->Top+ball->Height <= pad->Top)
+        {
+             if(y>0) y = -y;
+        }
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::LewoTimer(TObject *Sender)
+{
+        if(pad->Left > tlo->Left+15) pad->Left -= 10;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::PrawoTimer(TObject *Sender)
+{
+       if(pad->Left+pad->Width < tlo->Width-15) pad->Left += 10;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+        if(Key == VK_LEFT) Lewo->Enabled=true;
+        if(Key == VK_RIGHT) Prawo->Enabled=true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+        if(Key == VK_LEFT) Lewo->Enabled=false;
+        if(Key == VK_RIGHT) Prawo->Enabled=false;
+}
+//---------------------------------------------------------------------------
+
+
+
